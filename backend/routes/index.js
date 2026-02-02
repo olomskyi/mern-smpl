@@ -1,11 +1,13 @@
+
 import express from 'express';
 import multer from 'multer';
 import UserController from '../controllers/user-controller.js';
+import PostController from '../controllers/post-controller.js';
 import authenticateToken from '../middle/auth.js';
 
 var router = express.Router();
 
-// Images uplooad storage configuration
+// Images upload storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads/');
@@ -38,5 +40,22 @@ router.get('/user/:id', authenticateToken, UserController.getUserById);
 
 // Current user route
 router.get('/current-user', authenticateToken, UserController.currentUser);
+
+// PostController routes
+
+// Get a post by ID
+router.get('/posts/:id', PostController.getPostById);
+
+// Get all posts
+router.get('/posts', authenticateToken, PostController.getAllPosts);
+
+// Create a new post
+router.post('/posts', authenticateToken, PostController.createPost);
+
+// Update a post by ID
+router.put('/posts/:id', authenticateToken, PostController.updatePost);
+
+// Delete a post by ID
+router.delete('/posts/:id', authenticateToken, PostController.deletePost);
 
 export default router;

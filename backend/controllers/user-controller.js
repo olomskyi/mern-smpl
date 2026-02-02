@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import * as jdenticon from 'jdenticon';
-import e from 'express';
 
 class UserController {
 
@@ -123,7 +122,6 @@ class UserController {
     }
 
     try {
-
       // Check if email is being updated and if it's already taken
       if (email) {
         const existingUser = await prisma.user.findUnique({ where: { email } });
