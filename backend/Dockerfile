@@ -8,13 +8,29 @@
 
 ARG NODE_VERSION=24.11.0
 
+# Use image
 FROM node:${NODE_VERSION}-alpine
 
 # Use production node environment by default.
 ENV NODE_ENV production
 
+# Work directory
+WORKDIR /app
 
-WORKDIR /usr/src/app
+# Copy requirements
+COPY package*.json ./
+
+# Setup dependencies
+RUN npm install
+
+# Prisma setup
+RUN npm install -g prisma
+
+# Prisma schema
+COPY prisma ./prisma/
+
+# Generate prisma client
+RUN npx prisma generate
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
