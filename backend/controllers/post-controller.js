@@ -1,3 +1,4 @@
+
 import prisma from '../prisma/prisma-client.js';
 
 class PostController {
@@ -15,14 +16,12 @@ class PostController {
         }
 
         try {
-            const newPost = await prisma.post.create({
-                data: { content, authorId }
-            });
+            const newPost = await prisma.post.create({ data: { content, authorId }});
 
-            return res.status(201).json(newPost);
+            res.status(201).json(newPost);
         } catch (error) {
             console.error("Error creating post:", error);
-            return res.status(500).send("Internal server error while creating post.");
+            res.status(500).send("Internal server error while creating post.");
         }
     }
     
@@ -48,10 +47,10 @@ class PostController {
                 likesByUser: post.likes.some(like => like.userId === authorId)
             }));
 
-            return res.status(200).json(postWithLikeInfo);
+            res.status(200).json(postWithLikeInfo);
         } catch (error) {
             console.error("Error fetching all posts:", error);
-            return res.status(500).send("Internal server error while fetching posts.");
+            res.status(500).send("Internal server error while fetching posts.");
         }
     }
 
@@ -84,15 +83,15 @@ class PostController {
                     ...post,
                     likesByUser: post.likes.some(like => like.userId === userId)
                 };
-                return res.status(200).json(postWithLikeInfo);
+                res.status(200).json(postWithLikeInfo);
             } else {
                 console.log("User not authenticated, returning post without like info.");
-                return res.status(200).json(post);
+                res.status(200).json(post);
             }
 
         } catch (error) {
             console.error("Error fetching post by ID:", error);
-            return res.status(500).send("Internal server error while fetching post.");
+            res.status(500).send("Internal server error while fetching post.");
         }
     }
 
@@ -119,10 +118,10 @@ class PostController {
                 data: { content }
             });
             console.log("Post updated successfully:", updatedPost);
-            return res.status(200).json(updatedPost);
+            res.status(200).json(updatedPost);
         } catch (error) {
             console.error("Error updating post:", error);
-            return res.status(500).send("Internal server error while updating post.");
+            res.status(500).send("Internal server error while updating post.");
         }
     }
 
@@ -147,10 +146,10 @@ class PostController {
             ]);
 
             console.log("Transaction result:", transaction);
-            return res.status(200).json({ message: "Post deleted successfully." });
+            res.status(200).json({ message: "Post deleted successfully." });
         } catch (error) {
             console.error("Error deleting post:", error);
-            return res.status(500).send("Internal server error while deleting post.");
+            res.status(500).send("Internal server error while deleting post.");
         }
     }
 }

@@ -1,3 +1,4 @@
+
 import prisma from '../prisma/prisma-client.js';
 import bcrypt from 'bcrypt';
 import fs from 'fs';
@@ -33,10 +34,10 @@ class UserController {
             data: { name, email, password: hashedPassword, avatarUrl: avatarPath }
         });
         
-        return res.status(201).json({ id: newUser.id, name: newUser.name, email: newUser.email });
+        res.status(201).json({ id: newUser.id, name: newUser.name, email: newUser.email });
     } catch (error) {
         console.error("Error during user registration:", error);
-        return res.status(500).send("Internal server error.");
+        res.status(500).send("Internal server error.");
     }
   }
 
@@ -60,13 +61,12 @@ class UserController {
             return res.status(400).send("Invalid password.");
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '3h' });
         res.setHeader('Authorization', `Bearer ${token}`);
-
-        return res.status(200).json({ id: user.id, name: user.name, email: user.email });
+        res.status(200).json({ id: user.id, name: user.name, email: user.email });
     } catch (error) {
         console.error("Error during user login:", error);
-        return res.status(500).send("Internal server error.");
+        res.status(500).send("Internal server error.");
     }
   }
 
@@ -97,11 +97,11 @@ class UserController {
             }
         });
 
-        return res.status(200).json({ ...user, isFollowing: isFollowing });
+        res.status(200).json({ ...user, isFollowing: isFollowing });
 
     } catch (error) {
         console.error("Error fetching user by ID:", error);
-        return res.status(500).send("Internal server error while get User By Id.");
+        res.status(500).send("Internal server error while get User By Id.");
     }
   }
 
@@ -146,7 +146,7 @@ class UserController {
 
     } catch (error) {
       console.error("Error updating user:", error);
-      return res.status(500).send("Internal server error while update User.");
+      res.status(500).send("Internal server error while update User.");
     }
   }
 
@@ -161,13 +161,14 @@ class UserController {
           following: { include: { following: true } }
         }
       });
+
       if (!user) {
         return res.status(404).send("User not found.");
       }
-      return res.status(200).json(user);
+      res.status(200).json(user);
     } catch (error) {
       console.error("Error fetching current user:", error);
-      return res.status(500).send("Internal server error while get current User.");
+      res.status(500).send("Internal server error while get current User.");
     }
   }
 };
