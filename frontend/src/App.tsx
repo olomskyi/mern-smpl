@@ -1,10 +1,10 @@
 import "./App.css"
 import { Button } from "@heroui/react";
 
-export const App = () => (
-  <div className="App">
-    <header className="App-header">
+export const App = () => {
+  return (
+    <div className="App">
       <Button color="primary" >Button</Button>
-    </header>
-  </div>
-)
+    </div>
+  )
+}

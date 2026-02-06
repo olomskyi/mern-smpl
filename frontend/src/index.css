@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin './hero.ts';
-/* Note: You may need to change the path to fit your project structure */
-@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
 
 body {
@@ -11,6 +10,10 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  min-height: 100vh;
 }
 
 code {
