@@ -24,7 +24,8 @@ const upload = multer({ storage: storage }); // Crete multer storage instance
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  res.send('Hello from the home API page!');
+  console.log("Root server is up")
+  res.send('Hello from the server root!');
 });
 
 

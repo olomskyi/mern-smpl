@@ -29,15 +29,15 @@ const router = createBrowserRouter([
         path: "",
         element: <Posts />
       },
-            {
+      {
         path: "posts/:id",
         element: <CurrentPost />
       },
-            {
+      {
         path: "users/:id",
         element: <UserProfile />
       },
-            {
+      {
         path: "followers",
         element: <Followers />
       },

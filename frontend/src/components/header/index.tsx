@@ -1,5 +1,5 @@
-import { useContext } from "react"
-import { ThemeContext } from "../theme-provider"
+import { useContext } from "react";
+import { ThemeContext } from "../theme-provider";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/react";
 import { FaRegMoon } from "react-icons/fa";
 import { LuSunMedium } from "react-icons/lu";
@@ -18,7 +18,7 @@ export const Header = () => {
                     { theme === 'light' ? <FaRegMoon /> : <LuSunMedium />}
                 </NavbarItem>
                 <NavbarItem>
-                    ...
+                    ... {/* TODO */}
                 </NavbarItem>
             </NavbarContent>
         </Navbar>

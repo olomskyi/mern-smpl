@@ -1,10 +1,9 @@
-import { Outlet } from "react-router-dom"
-import { Container } from "../container"
-import { Header } from "../header"
-import { NavBar } from "../nav-bar"
+import { Outlet } from "react-router-dom";
+import { Container } from "../container";
+import { Header } from "../header";
+import { NavBar } from "../nav-bar";
 
 export const Layout = () => {
-
     return (
         <>
             <Header />
@@ -16,7 +15,7 @@ export const Layout = () => {
                     <Outlet />
                 </div>
                 <div>
-                    ...
+                    ... {/* TODO */}
                 </div>
             </Container>
         </>

@@ -1,5 +1,6 @@
-import { Comment } from "../types"
-import { api } from "./api"
+
+import type { Comment } from "../types";
+import { api } from "./api";
 
 export const commentsApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,7 +11,7 @@ export const commentsApi = api.injectEndpoints({
         body: newComment,
       }),
     }),
-    deleteComment: builder.mutation<void, string>({
+    deleteComment: builder.mutation<undefined, string>({
       query: (commentId) => ({
         url: `/comments/${commentId}`,
         method: "DELETE",

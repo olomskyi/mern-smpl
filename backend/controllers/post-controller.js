@@ -27,6 +27,7 @@ class PostController {
     
     // GET /posts
     async getAllPosts(req, res) {
+        console.log("Get All Posts");
         if (!req.user || !req.user.id) {
             return res.status(401).send("Unauthorized: User information is missing.");
         }

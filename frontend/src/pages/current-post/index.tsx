@@ -1,11 +1,9 @@
 
-import React from "react";
-
 export const CurrentPost = () => {
 
     return (
         <div>
-            Current Post
+            Current Post {/* TODO */}
         </div>
     )
 }

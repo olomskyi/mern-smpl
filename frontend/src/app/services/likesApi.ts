@@ -20,7 +20,4 @@ export const likesApi = api.injectEndpoints({
 })
 
 export const { useLikePostMutation, useUnlikePostMutation } = likesApi
-
-export const {
-  endpoints: { likePost, unlikePost },
-} = likesApi
+export const { endpoints: { likePost, unlikePost } } = likesApi

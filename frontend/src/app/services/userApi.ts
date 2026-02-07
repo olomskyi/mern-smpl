@@ -1,5 +1,6 @@
-import type { User } from "../types"
-import { api } from "./api"
+
+import type { User } from "../types";
+import { api } from "./api";
 
 export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -53,8 +54,5 @@ export const {
   useGetUserByIdQuery,
   useLazyGetUserByIdQuery,
   useUpdateUserMutation,
-} = userApi
-
-export const {
-  endpoints: { login, register, current, getUserById, updateUser },
-} = userApi
+} = userApi;
+export const { endpoints: { login, register, current, getUserById, updateUser } } = userApi;
