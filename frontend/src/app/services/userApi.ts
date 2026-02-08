@@ -4,15 +4,17 @@ import { api } from "./api";
 
 export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<
-      { token: string },
-      { email: string; password: string }
-    >({
+    login: builder.mutation<{ user: User; token?: string }, { email: string; password: string }>({
       query: (userData) => ({
         url: "/login",
         method: "POST",
         body: userData,
       }),
+      transformResponse: (response: User, meta) => {
+        const tokenHeader = meta?.response?.headers.get("authorization");
+        const cleanToken = tokenHeader ? tokenHeader.replace("Bearer ", "") : undefined;
+        return { user: response, token: cleanToken };
+      },
     }),
     register: builder.mutation<
       { email: string; password: string; name: string },

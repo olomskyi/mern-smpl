@@ -88,6 +88,7 @@ class UserController {
             return res.status(404).send("User not found.");
         }
 
+        const { password, ...userWithoutPassword } = user;
         const isFollowing = await prisma.follows.findFirst({
             where: {
               AND: [
@@ -97,7 +98,7 @@ class UserController {
             }
         });
 
-        res.status(200).json({ ...user, isFollowing: isFollowing });
+        res.status(200).json({ ...userWithoutPassword, isFollowing: isFollowing });
 
     } catch (error) {
         console.error("Error fetching user by ID:", error);
@@ -142,7 +143,8 @@ class UserController {
         }
       });
 
-      res.status(200).json(user);
+      const { password, ...userWithoutPassword } = user;
+      res.status(200).json(userWithoutPassword);
 
     } catch (error) {
       console.error("Error updating user:", error);
@@ -150,7 +152,7 @@ class UserController {
     }
   }
 
-  // GET /current-user
+  // GET /current
   async currentUser(req, res)
   {
     try {
@@ -165,7 +167,9 @@ class UserController {
       if (!user) {
         return res.status(404).send("User not found.");
       }
-      res.status(200).json(user);
+
+      const { password, ...userWithoutPassword } = user;
+      res.status(200).json(userWithoutPassword);
     } catch (error) {
       console.error("Error fetching current user:", error);
       res.status(500).send("Internal server error while get current User.");

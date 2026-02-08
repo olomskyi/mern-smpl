@@ -1,6 +1,6 @@
 
 import { Input } from "../../components/input";
-import { useForm } from "react-hook-form";
+import { type FieldErrors, useForm } from "react-hook-form";
 import { Button, Link } from "@heroui/react";
 import { useLazyCurrentQuery, useLoginMutation } from "../../app/services/userApi";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ type LoginFormValues = { email: string; password: string };
 
 export const Login = ({ setSelected }: Props) => {
 
-  const { handleSubmit, control, formState: { errors } } = useForm<Login>({
+  const { handleSubmit, control } = useForm<Login>({
     mode: "onChange",
     reValidateMode: "onBlur",
     defaultValues: {
@@ -33,13 +33,14 @@ export const Login = ({ setSelected }: Props) => {
   const [login, { isLoading }] = useLoginMutation();
   const [error, setError] = useState("");
 
-   // TODO
   const navigate = useNavigate();
   const [triggerCurrentQuery] = useLazyCurrentQuery();
 
   const onSubmit = async (data: Login) => {
     try {
       await login(data).unwrap();
+      await triggerCurrentQuery(undefined).unwrap();
+      await navigate('/');
     } catch (err) {
       if (hasErrorField(err)) {
         setError(err.data.error);
@@ -47,8 +48,12 @@ export const Login = ({ setSelected }: Props) => {
     }
   }
 
+  const onError = (errors: FieldErrors<Login>) => {
+      console.log("Validation errors:", errors);
+  }
+
   return (
-    <form className="flex flex-col gap-4" onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
+    <form className="flex flex-col gap-4" onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}>
       <Input<LoginFormValues>
         control={control}
         name="email"

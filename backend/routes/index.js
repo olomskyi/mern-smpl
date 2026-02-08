@@ -44,7 +44,7 @@ router.put('/user/:id', authenticateToken, UserController.updateUser);
 router.get('/user/:id', authenticateToken, UserController.getUserById);
 
 // Current user route
-router.get('/current-user', authenticateToken, UserController.currentUser);
+router.get('/current', authenticateToken, UserController.currentUser);
 
 
 //// PostController routes

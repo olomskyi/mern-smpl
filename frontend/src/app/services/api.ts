@@ -5,10 +5,13 @@ import { BASE_URL } from "../../constants";
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}/api`,
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token ?? localStorage.getItem("token");
+    const token = (getState() as RootState).user.token ?? localStorage.getItem("token");
 
     if (token) {
+      console.log("Token received");
       headers.set("authorization", `Bearer ${token}`);
+    } else {
+      console.log("NO token received!");
     }
     return headers;
   },

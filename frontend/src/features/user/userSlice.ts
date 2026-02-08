@@ -25,21 +25,23 @@ const slice = createSlice({
     logout: () => initialState,
     resetUser: state => {
       state.user = null
-    },
+    }
   },
   extraReducers: builder => {
     builder
       .addMatcher(userApi.endpoints.login.matchFulfilled, (state, action) => {
-        state.token = action.payload.token
-        state.isAuthenticated = true
+        console.log("Login Action Payload:", action.payload);
+        //state.token = action.payload.token;  // token is undefined
+        state.isAuthenticated = true;
       })
       .addMatcher(userApi.endpoints.current.matchFulfilled, (state, action) => {
-        state.isAuthenticated = true
-        state.current = action.payload
+        console.log("Current Action Payload:", action.payload);
+        state.isAuthenticated = true;
+        state.current = action.payload;
       })
-      .addMatcher(
-        userApi.endpoints.getUserById.matchFulfilled, (state, action) => {
-          state.user = action.payload
+      .addMatcher(userApi.endpoints.getUserById.matchFulfilled, (state, action) => {
+          console.log("Get Action Payload:", action.payload);
+          state.user = action.payload;
         },
       )
   },
@@ -48,7 +50,7 @@ const slice = createSlice({
 export const { logout, resetUser } = slice.actions
 export default slice.reducer
 
-export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated
-export const selectCurrent = (state: RootState) => state.auth.current
-export const selectUsers = (state: RootState) => state.auth.users
-export const selectUser = (state: RootState) => state.auth.user
+export const selectIsAuthenticated = (state: RootState) => state.user.isAuthenticated
+export const selectCurrent = (state: RootState) => state.user.current
+export const selectUsers = (state: RootState) => state.user.users
+export const selectUser = (state: RootState) => state.user.user
