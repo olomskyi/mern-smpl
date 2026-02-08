@@ -11,8 +11,9 @@ export const userApi = api.injectEndpoints({
         body: userData,
       }),
       transformResponse: (response: User, meta) => {
-        const tokenHeader = meta?.response?.headers.get("authorization");
+        const tokenHeader = meta?.response?.headers.get("Authorization");
         const cleanToken = tokenHeader ? tokenHeader.replace("Bearer ", "") : undefined;
+        console.log("Transform token:", cleanToken);
         return { user: response, token: cleanToken };
       },
     }),

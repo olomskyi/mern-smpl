@@ -63,6 +63,7 @@ class UserController {
 
         const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '3h' });
         res.setHeader('Authorization', `Bearer ${token}`);
+        res.setHeader("Access-Control-Expose-Headers", "Authorization");
         res.status(200).json({ id: user.id, name: user.name, email: user.email });
     } catch (error) {
         console.error("Error during user login:", error);

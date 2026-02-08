@@ -1,7 +1,6 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
-import { App } from "./App"
 import "./index.css"
 import { HeroUIProvider } from "@heroui/react";
 import { store } from "./app/store"
@@ -14,6 +13,7 @@ import { CurrentPost } from "./pages/current-post"
 import { UserProfile } from "./pages/userProfile"
 import { Followers } from "./pages/followers"
 import { Following } from "./pages/following"
+import { AuthGuard } from "./features/user/authGuard"
 
 const container = document.getElementById("root")
 const router = createBrowserRouter([
@@ -57,7 +57,9 @@ if (container) {
       <Provider store={store}>
         <HeroUIProvider>
           <ThemeProvider>
-            <RouterProvider router={router} />
+            <AuthGuard>
+              <RouterProvider router={router} />
+            </AuthGuard>
           </ThemeProvider>
         </HeroUIProvider>
       </Provider>
