@@ -27,8 +27,8 @@ class UserController {
         const hashedPassword = await bcrypt.hash(password, 10);
         const avatar = jdenticon.toPng(name, 200); // Generate avatar based on name
         const avatarName = `${name}-${Date.now()}-avatar.png`;
-        const avatarPath = `./uploads/${avatarName}`;
-        fs.writeFileSync(avatarPath, avatar);
+        const avatarPath = `/uploads/${avatarName}`;  // Store to DB without dot
+        fs.writeFileSync(`.${avatarPath}`, avatar); // Add dot to correct path
 
         const newUser = await prisma.user.create({
             data: { name, email, password: hashedPassword, avatarUrl: avatarPath }

@@ -3,9 +3,23 @@ import { ThemeContext } from "../theme-provider";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/react";
 import { FaRegMoon } from "react-icons/fa";
 import { LuSunMedium } from "react-icons/lu";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { logout, selectIsAuthenticated } from "../../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
+import { CiLogout } from "react-icons/ci";
+import { Button } from "@heroui/react";
 
 export const Header = () => {
     const { theme, toggleTheme } = useContext(ThemeContext);
+    const isAuthenticated = useAppSelector(selectIsAuthenticated);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        localStorage.removeItem('token');
+        void navigate('/auth');
+    }
 
     return (
         <Navbar>
@@ -18,7 +32,12 @@ export const Header = () => {
                     { theme === 'light' ? <FaRegMoon /> : <LuSunMedium />}
                 </NavbarItem>
                 <NavbarItem>
-                    ... {/* TODO */}
+                    {isAuthenticated && (
+                        <Button color="default" variant="flat" className="gap-2" onPress={handleLogout} >
+                            <CiLogout />
+                            <span>Logout</span>
+                        </Button>
+                    )}
                 </NavbarItem>
             </NavbarContent>
         </Navbar>

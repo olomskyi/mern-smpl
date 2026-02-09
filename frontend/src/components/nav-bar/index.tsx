@@ -3,7 +3,7 @@ import { NavButton } from "../nav-button";
 import { BsPostcard } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 
-export const NavBar = () => {
+export const NavBar: React.FC = () => {
     return (
         <nav>
             <ul className="flex flex-col gap-5">

@@ -48,6 +48,8 @@ class PostController {
                 likesByUser: post.likes.some(like => like.userId === authorId)
             }));
 
+            console.log("All posts:", postWithLikeInfo);
+
             res.status(200).json(postWithLikeInfo);
         } catch (error) {
             console.error("Error fetching all posts:", error);
