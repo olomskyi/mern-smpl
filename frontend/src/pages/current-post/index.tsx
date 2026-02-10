@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom"
+
+import { useParams } from "react-router-dom";
 import { useGetPostByIdQuery } from "../../app/services/postsApi";
 import { Card } from "../../components/card";
 import { GoBack } from "../../components/go-back";
@@ -29,7 +30,7 @@ export const CurrentPost = () => {
             likesCount={likes.length}
             commentsCount={comments.length}
             authorId={authorId}
-            id={id}
+            postId={id}
             likedByUser={likesByUser}
             createdAt={createdAt}
         />
@@ -45,7 +46,8 @@ export const CurrentPost = () => {
                     name={comment.user.name ?? ''}
                     content={comment.content}
                     authorId={comment.userId}
-                    id={comment.id}
+                    postId={comment.postId}
+                    commentId={comment.id}
                 />
             )) : null
             }

@@ -24,7 +24,7 @@ export const Posts = () => {
                         commentsCount={comments.length}
                         likedByUser={likesByUser}
                         createdAt={createdAt}
-                        id={id}
+                        postId={id}
                         cardFor='post' >
                     </Card>
                 )) : null

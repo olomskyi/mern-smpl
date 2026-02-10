@@ -36,19 +36,21 @@ class PostController {
         try {
             const posts = await prisma.post.findMany({
                 include: {
-                    author: true,
+                    author: true,   // TODO: replace with select to avoid password inclusion
                     likes: true,
                     comments: true
                 },
                 orderBy: { createdAt: 'desc' }
             });
 
-            const postWithLikeInfo = posts.map(post => ({
-                ...post,
-                likesByUser: post.likes.some(like => like.userId === authorId)
-            }));
-
-            console.log("All posts:", postWithLikeInfo);
+            const postWithLikeInfo = posts.map(post => {
+                const { password, ...authorWithoutPassword } = post.author; // Remove password
+                return {
+                    ...post,
+                    author: authorWithoutPassword,
+                    likesByUser: post.likes.some(like => like.userId === authorId),
+                }
+            });
 
             res.status(200).json(postWithLikeInfo);
         } catch (error) {

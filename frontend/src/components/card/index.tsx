@@ -27,14 +27,14 @@ type Props = {
     likesCount?: number;
     commentsCount?: number;
     createdAt?: Date;
-    id?: string;
+    postId?: string;
     cardFor: 'comment' | 'post' | 'current-post';
     likedByUser?: boolean;
 }
 
 export const Card: React.FC<Props> = ({
     avatarUrl, name, authorId, content, commentId = '', likesCount = 0, commentsCount = 0,
-    createdAt, id = '', cardFor, likedByUser
+    createdAt, postId = '', cardFor, likedByUser
 }) => {
     const [likePost] = useLikePostMutation();
     const [unlikePost] = useUnlikePostMutation();
@@ -45,20 +45,17 @@ export const Card: React.FC<Props> = ({
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const currentUser = useAppSelector(selectCurrent);
-    const [liked, setLiked] = useState(likedByUser ?? false);
-
-    console.log("Card create, likedByUser:", likedByUser);
-
+ 
     const refetchPosts = async () => {
         switch (cardFor) {
             case "post":
-                await triggerGetAllPosts(undefined).unwrap();
+                await triggerGetAllPosts(undefined, false).unwrap();
                 break
             case "current-post":
-                await triggerGetAllPosts(undefined).unwrap();
+                await triggerGetAllPosts(undefined, false).unwrap();
                 break
             case "comment":
-                await triggerGetPostById(id).unwrap();
+                await triggerGetPostById(postId, false).unwrap();
                 break
             default:
                 throw new Error("Wrong cardFor")
@@ -66,14 +63,11 @@ export const Card: React.FC<Props> = ({
     }
 
     const handleClick = async () => {
-        console.log("Handle click, likedByUser:", liked);
         try {
-            if (liked) {
-                await unlikePost(id).unwrap();
-                setLiked(false);
+            if (likedByUser) {
+                await unlikePost(postId).unwrap();
             } else {
-                await likePost({ postId: id }).unwrap();
-                setLiked(true);
+                await likePost({ postId }).unwrap();
             }
             await refetchPosts();
         } catch (err) {
@@ -86,20 +80,19 @@ export const Card: React.FC<Props> = ({
     }
 
     const handleDelete = async () => {
-        console.log("Handle delete:", cardFor);
         try {
             switch (cardFor) {
                 case "post":
-                    await deletePost(id).unwrap()
-                    await refetchPosts()
+                    await deletePost(postId).unwrap();
+                    await refetchPosts();
                     break
                 case "current-post":
-                    await deletePost(id).unwrap()
-                    void navigate('/')
+                    await deletePost(postId).unwrap();
+                    void navigate('/');
                     break
                 case "comment":
-                    await deleteComment(commentId).unwrap()
-                    await refetchPosts()
+                    await deleteComment(commentId).unwrap();
+                    await refetchPosts();
                     break
                 default:
                     throw new Error("Wrong cardFor")
@@ -142,7 +135,7 @@ export const Card: React.FC<Props> = ({
                                 Icon={likedByUser ? FcDislike : FaHeart }
                             />
                         </div>
-                        <Link to={`/posts/${id}`}>
+                        <Link to={`/posts/${postId}`}>
                             <MetaInfo count={commentsCount} Icon={FaRegComment} />
                         </Link>
                     </div>

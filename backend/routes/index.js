@@ -50,7 +50,7 @@ router.get('/current', authenticateToken, UserController.currentUser);
 //// PostController routes
 
 // Get a post by ID
-router.get('/posts/:id', PostController.getPostById);
+router.get('/posts/:id', authenticateToken, PostController.getPostById);
 
 // Get all posts
 router.get('/posts', authenticateToken, PostController.getAllPosts);

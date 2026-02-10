@@ -21,10 +21,10 @@ class FollowController {
 
         try {
             const existingFollowing = await prisma.follows.findFirst({
-                 where: {AND: [{ followerId: userId }, { followingId }]}
+                    where: {AND: [{ followerId: userId }, { followingId }]}
                 })
             if (existingFollowing) {
-                return res.status(400).json({ error: "No subscriptions"});
+                return res.status(400).json({ error: "Already subscribed"});
             }
 
             await prisma.follows.create({
@@ -56,7 +56,7 @@ class FollowController {
 
         try {
             const existingFollowing = await prisma.follows.findFirst({
-                 where: {AND: [{ followerId: userId }, { followingId }]}
+                    where: {AND: [{ followerId: userId }, { followingId }]}
                 })
             if (!existingFollowing) {
                 return res.status(404).json({ error: "No subscriptions found"});

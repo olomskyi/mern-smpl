@@ -75,6 +75,7 @@ class UserController {
   async getUserById(req, res)
   {
     const id = req.params.id;
+    const userId = req.user.id; // Current user id
 
     try {
         const user = await prisma.user.findUnique({
@@ -93,7 +94,7 @@ class UserController {
         const isFollowing = await prisma.follows.findFirst({
             where: {
               AND: [
-                { followerId: id },
+                { followerId: userId },
                 { followingId: id }
               ]
             }
