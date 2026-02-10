@@ -14,8 +14,7 @@ import { ErrorMessage } from '../error-message';
 import { hasErrorField } from '../../utils/has-error-field';
 import { formatToClientDate } from '../../utils/format-to-client-date';
 import { FcDislike } from 'react-icons/fc';
-import { MdOutlineFavoriteBorder } from 'react-icons/md';
-import { FaRegComment } from 'react-icons/fa';
+import { FaHeart, FaRegComment } from 'react-icons/fa';
 import { Typography } from '../typography';
 import { MetaInfo } from '../meta-info';
 
@@ -32,9 +31,10 @@ type Props = {
     cardFor: 'comment' | 'post' | 'current-post';
     likedByUser?: boolean;
 }
+
 export const Card: React.FC<Props> = ({
     avatarUrl, name, authorId, content, commentId = '', likesCount = 0, commentsCount = 0,
-    createdAt, id = '', cardFor, likedByUser = false
+    createdAt, id = '', cardFor, likedByUser
 }) => {
     const [likePost] = useLikePostMutation();
     const [unlikePost] = useUnlikePostMutation();
@@ -45,17 +45,20 @@ export const Card: React.FC<Props> = ({
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const currentUser = useAppSelector(selectCurrent);
+    const [liked, setLiked] = useState(likedByUser ?? false);
+
+    console.log("Card create, likedByUser:", likedByUser);
 
     const refetchPosts = async () => {
         switch (cardFor) {
             case "post":
-                await triggerGetAllPosts(undefined).unwrap()
+                await triggerGetAllPosts(undefined).unwrap();
                 break
             case "current-post":
-                await triggerGetAllPosts(undefined).unwrap()
+                await triggerGetAllPosts(undefined).unwrap();
                 break
             case "comment":
-                await triggerGetPostById(id).unwrap()
+                await triggerGetPostById(id).unwrap();
                 break
             default:
                 throw new Error("Wrong cardFor")
@@ -63,18 +66,21 @@ export const Card: React.FC<Props> = ({
     }
 
     const handleClick = async () => {
+        console.log("Handle click, likedByUser:", liked);
         try {
-            if (likedByUser) {
+            if (liked) {
                 await unlikePost(id).unwrap();
+                setLiked(false);
             } else {
                 await likePost({ postId: id }).unwrap();
+                setLiked(true);
             }
-            await refetchPosts()
+            await refetchPosts();
         } catch (err) {
             if (hasErrorField(err)) {
-                setError(err.data.error)
+                setError(err.data.error);
             } else {
-                setError(err as string)
+                setError(err as string);
             }
         }
     }
@@ -133,7 +139,7 @@ export const Card: React.FC<Props> = ({
                         <div onClick={() => void handleClick()}>
                             <MetaInfo
                                 count={likesCount}
-                                Icon={likedByUser ? FcDislike : MdOutlineFavoriteBorder}
+                                Icon={likedByUser ? FcDislike : FaHeart }
                             />
                         </div>
                         <Link to={`/posts/${id}`}>

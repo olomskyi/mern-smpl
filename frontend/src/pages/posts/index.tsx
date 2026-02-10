@@ -14,17 +14,19 @@ export const Posts = () => {
                 <CreatePost />
             </div>
             {data && data.length > 0 ? data.map(
-                ({ content, author, id, authorId, comments, likes, likedByUser, createdAt }) => (
+                ({ content, author, id, authorId, comments, likes, likesByUser, createdAt }) => (
                     <Card key={id}
                         avatarUrl={author.avatarUrl ?? ''}
-                        content={content} name={author.name ?? ''}
+                        content={content}
+                        name={author.name ?? ''}
                         authorId={authorId}
                         likesCount={likes.length}
                         commentsCount={comments.length}
-                        likedByUser={likedByUser}
+                        likedByUser={likesByUser}
                         createdAt={createdAt}
                         id={id}
-                        cardFor='post' ></Card>
+                        cardFor='post' >
+                    </Card>
                 )) : null
             }
         </>

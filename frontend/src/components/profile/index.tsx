@@ -4,6 +4,7 @@ import { selectCurrent } from "../../features/user/userSlice";
 import { BASE_URL } from "../../constants";
 import { Link } from "react-router-dom";
 import { MdAlternateEmail } from "react-icons/md";
+
 export const Profile = () => {
     const current = useAppSelector(selectCurrent);
 

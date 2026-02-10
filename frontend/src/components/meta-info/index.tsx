@@ -12,7 +12,9 @@ export const MetaInfo = ({ count, Icon }: Props) => {
             {count > 0 && (
                 <p className="font-semibold text-default-400 text-large">{count}</p>
             )}
-            <p className="text-default-400 text-xl hover:text-2xl ease-in duration-100" ><Icon /></p>
+            <p className="text-default-400 text-xl hover:text-2xl ease-in duration-100" >
+                <Icon className={count > 0 ? "text-red-500" : "text-gray-400"}/>
+            </p>
         </div>
     )
 }
