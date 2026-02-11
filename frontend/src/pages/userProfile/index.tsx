@@ -31,12 +31,17 @@ export const UserProfile = () => {
         dispatch(resetUser());
     }, []);
 
+    if (!data) {
+        console.log("UserProfile: User Data not exist!");
+        return null;
+    }
+
     console.log("UserProfile: user data:", data);
 
     const handleFollow = async (): Promise<void> => {
         try {
             if (id) {
-                if (data?.isFollowing) {
+                if (data.isFollowing) {
                     await unfollowUser(id).unwrap()
                 } else {
                     await followUser({ followingId: id }).unwrap();
@@ -59,11 +64,6 @@ export const UserProfile = () => {
         } catch (err) {
             console.log("UserProfile error:", err);
         }
-    }
-
-    if (!data) {
-        console.log("UserProfile: User Data not exist!");
-        return null;
     }
 
     return (
@@ -111,6 +111,7 @@ export const UserProfile = () => {
                     </div>
                 </Card>
             </div >
+            {/* Modal component referenced to useDisclosure*/}
             <EditProfile isOpen={isOpen} onClose={() => { void handleClose()}} user={data} />
         </>
     )

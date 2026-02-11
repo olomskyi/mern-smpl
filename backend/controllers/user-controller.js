@@ -114,10 +114,16 @@ class UserController {
     const id = req.params.id;
     const { name, email, dateOfBirth, bio, location } = req.body;
 
+    console.log("updateUser: ", req.body);
+    console.log("updateUser dateOfBirth: ", dateOfBirth);
+    console.log("updateUser bio: ", bio);
+    console.log("updateUser id: ", id);
+    console.log("updateUser req.user.id: ", req.user.id);
+
     // Handle file upload if present
     let filePath = null;
-    if (req.file && req.file.path) {
-      filePath = req.file.path;
+    if (req.file && req.file.filename) {
+      filePath = `/uploads/${req.file.filename}`;
     }
 
     if (id !== req.user.id) {

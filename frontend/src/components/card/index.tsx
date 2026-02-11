@@ -121,7 +121,9 @@ export const Card: React.FC<Props> = ({
                 </Link>
                 {authorId === currentUser?.id && (
                     <div className="cursor-pointer" onClick={() => void handleDelete()}>
-                        {deletePostStatus.isLoading || deleteCommentStatus.isLoading ? (<Spinner />) : (<RiDeleteBinLine />)}</div>)}
+                        {deletePostStatus.isLoading || deleteCommentStatus.isLoading ? (<Spinner />) : (<RiDeleteBinLine />)}
+                    </div>
+                )}
             </CardHeader>
             <CardBody className="px-3 py-2 mb-5">
                 <Typography>{content}</Typography>

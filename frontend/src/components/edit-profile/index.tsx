@@ -81,7 +81,7 @@ export const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
                             Change profile
                         </ModalHeader>
                         <ModalBody>
-                            <form className="flex flex-col gap-4" onSubmit={() => { void handleSubmit(onSubmit) }} >
+                            <form className="flex flex-col gap-4" onSubmit={(e) => void handleSubmit(onSubmit)(e)} >
                                 <Input
                                     control={control}
                                     name="email"

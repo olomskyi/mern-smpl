@@ -38,7 +38,7 @@ router.post('/register', UserController.register);
 router.post('/login', UserController.login);
 
 // Update user by ID route
-router.put('/user/:id', authenticateToken, UserController.updateUser);
+router.put('/user/:id', authenticateToken, upload.single('avatar'), UserController.updateUser);
 
 // Get user by ID route
 router.get('/user/:id', authenticateToken, UserController.getUserById);
