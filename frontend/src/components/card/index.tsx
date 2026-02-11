@@ -111,7 +111,7 @@ export const Card: React.FC<Props> = ({
     return (
         <HeroCard className='mb-5'>
             <CardHeader className='justify-between items-center bg-transparent'>
-                <Link to={`/users/${authorId}`}>
+                <Link to={`/user/${authorId}`}>
                     <User
                         name={name}
                         className="text-small font-semibold leading-none text-default-600"
