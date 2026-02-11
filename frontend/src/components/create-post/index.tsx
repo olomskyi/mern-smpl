@@ -7,8 +7,8 @@ import { IoMdCreate } from "react-icons/io";
 type FormValues = { post: string };
 
 export const CreatePost = () => {
-    const [ createPost ] = useCreatePostMutation();
-    const [ triggerAllPosts ] = useLazyGetAllPostsQuery();
+    const [createPost] = useCreatePostMutation();
+    const [triggerAllPosts] = useLazyGetAllPostsQuery();
 
     const { handleSubmit, control, setValue, formState: { errors } } = useForm<FormValues>();
     const error = errors.post?.message ?? "";
@@ -25,11 +25,11 @@ export const CreatePost = () => {
     return (
         <form className="grow" onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
             <Controller name="post" control={control} defaultValue=""
-                rules={{required: "Required field"}}
+                rules={{ required: "Required field" }}
                 render={({ field }) => (
-                    <Textarea { ...field } labelPlacement="outside" placeholder="What are you thinking about?" className="mb-5" />
+                    <Textarea {...field} labelPlacement="outside" placeholder="What are you thinking about?" className="mb-5" />
                 )} />
-            { error && <ErrorMessage error={ error} />}
+            {error && <ErrorMessage error={error} />}
 
             <Button color="success" className="flex-end" endContent={<IoMdCreate />} type="submit">Add post</Button>
         </form>

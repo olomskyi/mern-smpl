@@ -13,7 +13,7 @@ class UserController {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res.status(400).send("All fields are required.");
+      return res.status(400).send("register: All fields are required.");
     }
 
     try {
@@ -22,7 +22,7 @@ class UserController {
         });
 
         if (existingUser) {
-            return res.status(400).send("User with this email already exists.");
+            return res.status(400).send("register: User with this email already exists.");
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const avatar = jdenticon.toPng(name, 200); // Generate avatar based on name
@@ -37,7 +37,7 @@ class UserController {
         res.status(201).json({ id: newUser.id, name: newUser.name, email: newUser.email });
     } catch (error) {
         console.error("Error during user registration:", error);
-        res.status(500).send("Internal server error.");
+        res.status(500).send("register: Internal server error.");
     }
   }
 
@@ -47,27 +47,27 @@ class UserController {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).send("Email and password are required.");
+      return res.status(400).send("login: Email and password are required.");
     }
 
     try {
         const user = await prisma.user.findUnique({where: { email }});
         if (!user) {
-            return res.status(400).send("Invalid email.");
+            return res.status(400).send("login: Invalid email.");
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(400).send("Invalid password.");
+            return res.status(400).send("login: Invalid password.");
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '3h' });
+        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '8h' });
         res.setHeader('Authorization', `Bearer ${token}`);
         res.setHeader("Access-Control-Expose-Headers", "Authorization");
         res.status(200).json({ id: user.id, name: user.name, email: user.email });
     } catch (error) {
         console.error("Error during user login:", error);
-        res.status(500).send("Internal server error.");
+        res.status(500).send("login: Internal server error.");
     }
   }
 
@@ -87,7 +87,7 @@ class UserController {
         });
 
         if (!user) {
-            return res.status(404).send("User not found.");
+            return res.status(404).send("getUserById: User not found.");
         }
 
         const { password, ...userWithoutPassword } = user;
@@ -104,7 +104,7 @@ class UserController {
 
     } catch (error) {
         console.error("Error fetching user by ID:", error);
-        res.status(500).send("Internal server error while get User By Id.");
+        res.status(500).send("getUserById: Internal server error while get User By Id.");
     }
   }
 
@@ -114,12 +114,6 @@ class UserController {
     const id = req.params.id;
     const { name, email, dateOfBirth, bio, location } = req.body;
 
-    console.log("updateUser: ", req.body);
-    console.log("updateUser dateOfBirth: ", dateOfBirth);
-    console.log("updateUser bio: ", bio);
-    console.log("updateUser id: ", id);
-    console.log("updateUser req.user.id: ", req.user.id);
-
     // Handle file upload if present
     let filePath = null;
     if (req.file && req.file.filename) {
@@ -127,7 +121,7 @@ class UserController {
     }
 
     if (id !== req.user.id) {
-      return res.status(403).send("You can only update your own profile.");
+      return res.status(403).send("updateUser: You can only update your own profile.");
     }
 
     try {
@@ -135,7 +129,7 @@ class UserController {
       if (email) {
         const existingUser = await prisma.user.findUnique({ where: { email } });
         if (existingUser && existingUser.id !== id) {
-          return res.status(400).send("Email is already in use by another account.");
+          return res.status(400).send("updateUser: Email is already in use by another account.");
         }
       }
 
@@ -156,7 +150,7 @@ class UserController {
 
     } catch (error) {
       console.error("Error updating user:", error);
-      res.status(500).send("Internal server error while update User.");
+      res.status(500).send("updateUser: Internal server error while update User.");
     }
   }
 
@@ -173,14 +167,14 @@ class UserController {
       });
 
       if (!user) {
-        return res.status(404).send("User not found.");
+        return res.status(404).send("currentUser: User not found.");
       }
 
       const { password, ...userWithoutPassword } = user;
       res.status(200).json(userWithoutPassword);
     } catch (error) {
       console.error("Error fetching current user:", error);
-      res.status(500).send("Internal server error while get current User.");
+      res.status(500).send("currentUser: Internal server error while get current User.");
     }
   }
 };

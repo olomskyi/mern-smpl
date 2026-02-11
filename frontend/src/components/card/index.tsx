@@ -45,7 +45,7 @@ export const Card: React.FC<Props> = ({
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const currentUser = useAppSelector(selectCurrent);
- 
+
     const refetchPosts = async () => {
         switch (cardFor) {
             case "post":

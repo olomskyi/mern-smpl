@@ -7,16 +7,16 @@ class FollowController {
     async followUser(req, res)
     {
         const { followingId } = req.body;
-        const userId = req.user.id; // Assuming user ID is available in req.user
+        const userId = req.user.id; // Current user ID
 
         if (!followingId ) {
-            return res.status(400).json({ error: 'Following ID is required' });
+            return res.status(400).json({ error: 'followUser: Following ID is required' });
         }
         if (!userId) {
-            return res.status(401).json({ error: 'Unauthorized' });
+            return res.status(401).json({ error: 'followUser: Unauthorized' });
         }
         if (followingId === userId) {
-            return res.status(500).json({ error: 'Unable to follow yourself'})
+            return res.status(500).json({ error: 'followUser: Unable to follow yourself'})
         }
 
         try {
@@ -24,7 +24,7 @@ class FollowController {
                     where: {AND: [{ followerId: userId }, { followingId }]}
                 })
             if (existingFollowing) {
-                return res.status(400).json({ error: "Already subscribed"});
+                return res.status(400).json({ error: "followUser: Already subscribed"});
             }
 
             await prisma.follows.create({
@@ -34,7 +34,7 @@ class FollowController {
             }});
             res.status(201).json({ message: 'Successfully subscribed'});
         } catch (error) {
-            res.status(500).json({ error: 'Failed to follow' });
+            res.status(500).json({ error: 'followUser: Failed to follow' });
         }
     }
 
@@ -42,16 +42,16 @@ class FollowController {
     async unfollowUser(req, res)
     {
         const { followingId } = req.params;
-        const userId = req.user.id; // Assuming user ID is available in req.user
+        const userId = req.user.id; // Current user ID
 
         if (!followingId ) {
-            return res.status(400).json({ error: 'Following ID is required' });
+            return res.status(400).json({ error: 'unfollowUser: Following ID is required' });
         }
         if (!userId) {
-            return res.status(401).json({ error: 'Unauthorized' });
+            return res.status(401).json({ error: 'unfollowUser: Unauthorized' });
         }
         if (followingId === userId) {
-            return res.status(500).json({ error: 'Unable to follow yourself'})
+            return res.status(500).json({ error: 'unfollowUser: Unable to follow yourself'})
         }
 
         try {
@@ -59,13 +59,13 @@ class FollowController {
                     where: {AND: [{ followerId: userId }, { followingId }]}
                 })
             if (!existingFollowing) {
-                return res.status(404).json({ error: "No subscriptions found"});
+                return res.status(404).json({ error: "unfollowUser: No subscriptions found"});
             }
 
             await prisma.follows.delete({ where: { id: existingFollowing.id }});
             res.status(201).json({ message: 'Successfully deleted'});
         } catch (error) {
-            res.status(500).json({ error: 'Failed to delete subscription' });
+            res.status(500).json({ error: 'unfollowUser: Failed to delete subscription' });
         }
     }
 }

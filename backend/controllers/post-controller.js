@@ -9,10 +9,10 @@ class PostController {
         const authorId = req.user.id; // Get authorId from authenticated user
 
         if (!content) {
-            return res.status(400).send("All fields are required.");
+            return res.status(400).send("createPost: All fields are required.");
         }
         if (!authorId) {
-            return res.status(400).send("Author ID is not provided.");
+            return res.status(400).send("createPost: Author ID is not provided.");
         }
 
         try {
@@ -20,8 +20,8 @@ class PostController {
 
             res.status(201).json(newPost);
         } catch (error) {
-            console.error("Error creating post:", error);
-            res.status(500).send("Internal server error while creating post.");
+            console.error("createPost: Error creating post:", error);
+            res.status(500).send("createPost: Internal server error while creating post.");
         }
     }
     
@@ -29,7 +29,7 @@ class PostController {
     async getAllPosts(req, res) {
         console.log("Get All Posts");
         if (!req.user || !req.user.id) {
-            return res.status(401).send("Unauthorized: User information is missing.");
+            return res.status(401).send("getAllPosts: Unauthorized: User information is missing.");
         }
 
         const authorId = req.user.id;
@@ -54,8 +54,8 @@ class PostController {
 
             res.status(200).json(postWithLikeInfo);
         } catch (error) {
-            console.error("Error fetching all posts:", error);
-            res.status(500).send("Internal server error while fetching posts.");
+            console.error("getAllPosts: Error fetching all posts:", error);
+            res.status(500).send("getAllPosts: Internal server error while fetching posts.");
         }
     }
 
@@ -74,7 +74,7 @@ class PostController {
             });
 
             if (!post) {
-                return res.status(404).send("Post not found.");
+                return res.status(404).send("getPostById: Post not found.");
             }
 
             // Delete password from author object before sending response
@@ -90,13 +90,13 @@ class PostController {
                 };
                 res.status(200).json(postWithLikeInfo);
             } else {
-                console.log("User not authenticated, returning post without like info.");
+                console.log("getPostById: User not authenticated, returning post without like info.");
                 res.status(200).json(post);
             }
 
         } catch (error) {
-            console.error("Error fetching post by ID:", error);
-            res.status(500).send("Internal server error while fetching post.");
+            console.error("getPostById: Error fetching post by ID:", error);
+            res.status(500).send("getPostById: Internal server error while fetching post.");
         }
     }
 
@@ -105,16 +105,16 @@ class PostController {
         const { id } = req.params;
         const { content } = req.body;
         if (!content) {
-            return res.status(400).send("Content is required.");
+            return res.status(400).send("updatePost: Content is required.");
         }
 
         const post = await prisma.post.findUnique({ where: { id } });
         if (!post) {
-            return res.status(404).send("Post not found.");
+            return res.status(404).send("updatePost: Post not found.");
         }
 
         if (post.authorId !== req.user.id) {
-            return res.status(403).send("You are not authorized to update this post.");
+            return res.status(403).send("updatePost: You are not authorized to update this post.");
         }
 
         try {
@@ -122,11 +122,11 @@ class PostController {
                 where: { id },
                 data: { content }
             });
-            console.log("Post updated successfully:", updatedPost);
+
             res.status(200).json(updatedPost);
         } catch (error) {
-            console.error("Error updating post:", error);
-            res.status(500).send("Internal server error while updating post.");
+            console.error("updatePost: Error updating post:", error);
+            res.status(500).send("updatePost: Internal server error while updating post.");
         }
     }
 
@@ -136,11 +136,11 @@ class PostController {
 
         const post = await prisma.post.findUnique({ where: { id } });
         if (!post) {
-            return res.status(404).send("Post not found.");
+            return res.status(404).send("deletePost: Post not found.");
         }
 
         if (post.authorId !== req.user.id) {
-            return res.status(403).send("You are not authorized to delete this post.");
+            return res.status(403).send("deletePost: You are not authorized to delete this post.");
         }
 
         try {
@@ -150,11 +150,10 @@ class PostController {
                 prisma.post.delete({ where: { id } })
             ]);
 
-            console.log("Transaction result:", transaction);
             res.status(200).json({ message: "Post deleted successfully." });
         } catch (error) {
             console.error("Error deleting post:", error);
-            res.status(500).send("Internal server error while deleting post.");
+            res.status(500).send("deletePost: Internal server error while deleting post.");
         }
     }
 }

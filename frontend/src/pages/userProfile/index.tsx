@@ -29,7 +29,7 @@ export const UserProfile = () => {
 
     useEffect(() => () => {
         dispatch(resetUser());
-    }, []);
+    });
 
     if (!data) {
         console.log("UserProfile: User Data not exist!");

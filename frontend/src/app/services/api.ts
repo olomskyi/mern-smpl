@@ -7,10 +7,6 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const htoken = (getState() as RootState).user.token;
     const ltoken = localStorage.getItem("token");
-
-    console.log("Header Token received:", htoken);
-    console.log("Local Token received:", ltoken);
-
     const token = htoken ?? ltoken;
 
     if (token) {

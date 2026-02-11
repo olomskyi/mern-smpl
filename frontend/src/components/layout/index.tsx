@@ -1,3 +1,4 @@
+
 import { type NavigateFunction, Outlet, useNavigate } from "react-router-dom";
 import { Container } from "../container";
 import { Header } from "../header";
@@ -39,7 +40,7 @@ export const Layout = () => {
                 </div>
                 <div className="flex flex-row">
                     <div className="flex-1 p-4">
-                        <Outlet />
+                        <Outlet />{/* An insertion point for child routes inside a parent route */}
                     </div>
                     <div className="flex flex-1 p-4 justify-center">
                         <div className="flex-col flex gap-5">

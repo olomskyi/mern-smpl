@@ -1,3 +1,4 @@
+
 import { Input } from "../../components/input";
 import { useForm } from "react-hook-form";
 import { Button, Link } from "@heroui/react";
@@ -17,7 +18,7 @@ type Props = { setSelected: (value: string) => void };
 type RegisterFormValues = { email: string; password: string; name: string };
 
 export const Register = ({ setSelected }: Props) => {
-    const { handleSubmit, control, formState: { errors }, } = useForm<Register>({
+    const { handleSubmit, control } = useForm<Register>({
       mode: "onChange",
       reValidateMode: "onBlur",
       defaultValues: {

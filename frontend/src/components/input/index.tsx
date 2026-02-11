@@ -34,6 +34,7 @@ export const Input = <T extends FieldValues>({
             onChange={field.onChange}
             onBlur={field.onBlur}
             errorMessage={typeof errors[name]?.message === "string" ? errors[name].message : ""}
+            endContent={endContent}
         />
     )
 }
